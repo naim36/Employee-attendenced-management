@@ -1,4 +1,30 @@
+/* mystyle.css */
 
-.nav-link{
-    color : white !important;
+.navbar-brand {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #f8f9fa !important;
+}
+
+.navbar {
+    background: linear-gradient(45deg, #343a40, #007bff);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-nav .nav-item .nav-link {
+    color: #f8f9fa !important;
+    font-size: 1.2em;
+    transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-item .nav-link:hover {
+    color: #ffc107 !important;
+}
+
+.navbar-toggler {
+    border-color: #f8f9fa;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='#f8f9fa' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
 }
