@@ -1,8 +1,115 @@
-{% include "header.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Registration Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card-shadow {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .mt-5 {
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    {% include "header.html" %}
 
-
-<div class="card- shadow m-5">
-    <div class="card-body">
-        <h5> Create an Account </h5>
+    <div class="container mt-5">
+        <div class="card card-shadow m-5">
+            <div class="card-body">
+                <h5 class="card-title">Employee Registration</h5>
+                <form id="employeeForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" placeholder="Enter employee name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter employee email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter password" required>
+                        <small id="passwordHelp" class="form-text text-muted"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" required>
+                        <small id="confirmPasswordHelp" class="form-text text-muted"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="employeeCode">Employee Code</label>
+                        <input type="text" class="form-control" id="employeeCode" placeholder="Enter employee code" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </form>
+            </div>
+        </div>
     </div>
-</div>
+
+    <script>
+        function passwordChecker(password) {
+            const minLength = 8;
+            const hasUpper = /[A-Z]/.test(password);
+            const hasLower = /[a-z]/.test(password);
+            const hasDigit = /\d/.test(password);
+            const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
+
+            if (password.length < minLength) {
+                return "Password must be at least 8 characters long";
+            }
+            if (!hasUpper) {
+                return "Password must contain at least one uppercase letter";
+            }
+            if (!hasLower) {
+                return "Password must contain at least one lowercase letter";
+            }
+            if (!hasDigit) {
+                return "Password must contain at least one digit";
+            }
+            if (!hasSpecial) {
+                return "Password must contain at least one special character";
+            }
+            
+            return "Password is strong";
+        }
+
+        document.getElementById('employeeForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            const passwordMessage = passwordChecker(password);
+            const passwordHelp = document.getElementById('passwordHelp');
+            passwordHelp.innerText = passwordMessage;
+
+            if (passwordMessage !== "Password is strong") {
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                const confirmPasswordHelp = document.getElementById('confirmPasswordHelp');
+                confirmPasswordHelp.innerText = "Passwords do not match";
+                return;
+            }
+
+            const confirmPasswordHelp = document.getElementById('confirmPasswordHelp');
+            confirmPasswordHelp.innerText = "";
+
+            alert('Form submitted successfully!');
+
+            // Clear form fields
+            document.getElementById('employeeForm').reset();
+            passwordHelp.innerText = '';
+        });
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
