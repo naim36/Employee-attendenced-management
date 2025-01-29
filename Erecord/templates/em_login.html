@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Login Page</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card-shadow {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .mt-5 {
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    {% include "header.html" %}
+
+    <div class="container mt-5">
+        <div class="card card-shadow m-5">
+            <div class="card-body">
+                <h5 class="card-title">Employee Login</h5>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+                        <small id="loginHelp" class="form-text text-muted"></small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Placeholder for actual authentication logic
+            const isValidLogin = (email === "test@example.com" && password === "Password123!");
+
+            const loginHelp = document.getElementById('loginHelp');
+            if (isValidLogin) {
+                alert('Login successful!');
+                loginHelp.innerText = '';
+                // Redirect to dashboard or another page
+                window.location.href = 'dashboard.html';
+            } else {
+                loginHelp.innerText = 'Invalid email or password';
+            }
+
+            // Clear form fields
+            document.getElementById('loginForm').reset();
+        });
+    </script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

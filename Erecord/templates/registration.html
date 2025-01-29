@@ -15,8 +15,6 @@
     </style>
 </head>
 <body>
-    {% include "header.html" %}
-
     <div class="container mt-5">
         <div class="card card-shadow m-5">
             <div class="card-body">
@@ -46,6 +44,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Register</button>
                 </form>
+                <small id="formMessage" class="form-text text-muted"></small>
             </div>
         </div>
     </div>
@@ -100,7 +99,36 @@
             const confirmPasswordHelp = document.getElementById('confirmPasswordHelp');
             confirmPasswordHelp.innerText = "";
 
-            alert('Form submitted successfully!');
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                password: password,
+                employeeCode: document.getElementById('employeeCode').value
+            };
+
+            fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                const formMessage = document.getElementById('formMessage');
+                if (data.message === 'Employee registered successfully!') {
+                    formMessage.innerText = data.message;
+                    setTimeout(() => {
+                        window.location.href = '/login';
+                    }, 2000);
+                } else {
+                    formMessage.innerText = data.message;
+                }
+            })
+            .catch(error => {
+                const formMessage = document.getElementById('formMessage');
+                formMessage.innerText = 'Something went wrong. Please try again.';
+            });
 
             // Clear form fields
             document.getElementById('employeeForm').reset();
