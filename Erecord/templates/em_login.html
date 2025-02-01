@@ -21,15 +21,20 @@
         <div class="card card-shadow m-5">
             <div class="card-body">
                 <h5 class="card-title">Employee Login</h5>
-                <form id="loginForm">
+                <form method="POST">
+                    {% csrf_token %}
                     <div class="form-group">
                         <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
-                        <small id="loginHelp" class="form-text text-muted"></small>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                        <small id="loginHelp" class="form-text text-muted">
+                            {% if error_message %}
+                                <span class="text-danger">{{ error_message }}</span>
+                            {% endif %}
+                        </small>
                     </div>
                     <button type="submit" class="btn btn-primary">Login</button>
                 </form>
@@ -38,26 +43,21 @@
     </div>
 
     <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
+        document.getElementById('loginForm')?.addEventListener('submit', function(event) {
             event.preventDefault();
 
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            // Placeholder for actual authentication logic
-            const isValidLogin = (email === "test@example.com" && password === "Password123!");
-
             const loginHelp = document.getElementById('loginHelp');
-            if (isValidLogin) {
+            
+            {% if request.session.is_logged_in %}
                 alert('Login successful!');
-                loginHelp.innerText = '';
-                // Redirect to dashboard or another page
-                window.location.href = 'dashboard.html';
-            } else {
+                window.location.href = '{% url "dashboard" %}';
+            {% else %}
                 loginHelp.innerText = 'Invalid email or password';
-            }
+            {% endif %}
 
-            // Clear form fiel
             document.getElementById('loginForm').reset();
         });
     </script>
