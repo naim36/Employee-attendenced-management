@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Registration Form</title>
+    <title>Employee Registration</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .card-shadow {
@@ -15,32 +15,35 @@
     </style>
 </head>
 <body>
+    {% include "header.html" %}
+
     <div class="container mt-5">
         <div class="card card-shadow m-5">
             <div class="card-body">
                 <h5 class="card-title">Employee Registration</h5>
-                <form id="employeeForm">
+                <form method="POST" id="registrationForm">
+                    {% csrf_token %}
                     <div class="form-group">
                         <label for="name">Name</label>
-                        <input type="text" class="form-control" id="name" placeholder="Enter employee name" required>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter employee name" required>
                     </div>
                     <div class="form-group">
                         <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter employee email" required>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="Enter employee email" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter password" required>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
                         <small id="passwordHelp" class="form-text text-muted"></small>
                     </div>
                     <div class="form-group">
                         <label for="confirmPassword">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm password" required>
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm password" required>
                         <small id="confirmPasswordHelp" class="form-text text-muted"></small>
                     </div>
                     <div class="form-group">
                         <label for="employeeCode">Employee Code</label>
-                        <input type="text" class="form-control" id="employeeCode" placeholder="Enter employee code" required>
+                        <input type="text" class="form-control" id="employeeCode" name="employeeCode" placeholder="Enter employee code" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Register</button>
                 </form>
@@ -50,89 +53,25 @@
     </div>
 
     <script>
-        function passwordChecker(password) {
-            const minLength = 8;
-            const hasUpper = /[A-Z]/.test(password);
-            const hasLower = /[a-z]/.test(password);
-            const hasDigit = /\d/.test(password);
-            const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-
-            if (password.length < minLength) {
-                return "Password must be at least 8 characters long";
-            }
-            if (!hasUpper) {
-                return "Password must contain at least one uppercase letter";
-            }
-            if (!hasLower) {
-                return "Password must contain at least one lowercase letter";
-            }
-            if (!hasDigit) {
-                return "Password must contain at least one digit";
-            }
-            if (!hasSpecial) {
-                return "Password must contain at least one special character";
-            }
-            
-            return "Password is strong";
-        }
-
-        document.getElementById('employeeForm').addEventListener('submit', function(event) {
+        document.getElementById('registrationForm').addEventListener('submit', function(event) {
             event.preventDefault();
-
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
-
-            const passwordMessage = passwordChecker(password);
             const passwordHelp = document.getElementById('passwordHelp');
-            passwordHelp.innerText = passwordMessage;
+            const confirmPasswordHelp = document.getElementById('confirmPasswordHelp');
 
-            if (passwordMessage !== "Password is strong") {
+            if (password.length < 8) {
+                passwordHelp.innerText = "Password must be at least 8 characters long";
                 return;
             }
-
             if (password !== confirmPassword) {
-                const confirmPasswordHelp = document.getElementById('confirmPasswordHelp');
                 confirmPasswordHelp.innerText = "Passwords do not match";
                 return;
             }
-
-            const confirmPasswordHelp = document.getElementById('confirmPasswordHelp');
+            passwordHelp.innerText = "";
             confirmPasswordHelp.innerText = "";
-
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                password: password,
-                employeeCode: document.getElementById('employeeCode').value
-            };
-
-            fetch('/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                const formMessage = document.getElementById('formMessage');
-                if (data.message === 'Employee registered successfully!') {
-                    formMessage.innerText = data.message;
-                    setTimeout(() => {
-                        window.location.href = '/login';
-                    }, 2000);
-                } else {
-                    formMessage.innerText = data.message;
-                }
-            })
-            .catch(error => {
-                const formMessage = document.getElementById('formMessage');
-                formMessage.innerText = 'Something went wrong. Please try again.';
-            });
-
-            // Clear form fields
-            document.getElementById('employeeForm').reset();
-            passwordHelp.innerText = '';
+            
+            this.submit();
         });
     </script>
 
