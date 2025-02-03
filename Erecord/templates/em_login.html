@@ -5,12 +5,57 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Employee Login Page</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
     <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
         .card-shadow {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+            transition: transform 0.3s ease;
+        }
+        .card-shadow:hover {
+            transform: translateY(-5px);
         }
         .mt-5 {
             margin-top: 3rem;
+        }
+        .form-control {
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 15px rgba(0, 123, 255, 0.2);
+            border-color: #007bff;
+        }
+        .btn-primary {
+            border-radius: 10px;
+            padding: 10px 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+        .card-title {
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .form-group label {
+            font-weight: 500;
+            color: #34495e;
         }
     </style>
 </head>
@@ -18,16 +63,16 @@
     {% include "header.html" %}
 
     <div class="container mt-5">
-        <div class="card card-shadow m-5">
-            <div class="card-body">
-                <h5 class="card-title">Employee Login</h5>
-                <form method="POST">
+        <div class="card card-shadow m-5 animate__animated animate__fadeInUp">
+            <div class="card-body p-5">
+                <h5 class="card-title animate__animated animate__fadeIn animate__delay-1s">Welcome Back!</h5>
+                <form method="POST" id="loginForm">
                     {% csrf_token %}
-                    <div class="form-group">
+                    <div class="form-group animate__animated animate__fadeInLeft animate__delay-2s">
                         <label for="email">Email address</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group animate__animated animate__fadeInRight animate__delay-2s">
                         <label for="password">Password</label>
                         <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
                         <small id="loginHelp" class="form-text text-muted">
@@ -36,32 +81,15 @@
                             {% endif %}
                         </small>
                     </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <div class="text-center animate__animated animate__fadeInUp animate__delay-3s">
+                        <button type="submit" class="btn btn-primary btn-lg">Login</button>
+                    </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <script>
-        document.getElementById('loginForm')?.addEventListener('submit', function(event) {
-            event.preventDefault();
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            const loginHelp = document.getElementById('loginHelp');
-            
-            {% if request.session.is_logged_in %}
-                alert('Login successful!');
-                window.location.href = '{% url "dashboard" %}';
-            {% else %}
-                loginHelp.innerText = 'Invalid email or password';
-            {% endif %}
-
-            document.getElementById('loginForm').reset();
-        });
-    </script>
-
+    <!-- Keep your existing scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
